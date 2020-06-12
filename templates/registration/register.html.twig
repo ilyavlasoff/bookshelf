@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <div>
+        <div class="content">
+            <div class="form-container">
+                {% for flashError in app.flashes('verify_email_error') %}
+                    <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+                {% endfor %}
+
+                <h3>Register</h3>
+
+                {{ form_start(registrationForm) }}
+                <div class="form-group">
+                    <label for="exampleInputEmail1">{{ form_label(registrationForm.email) }}</label>
+                    {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">{{ form_label(registrationForm.nickname) }}</label>
+                    {{ form_widget(registrationForm.nickname, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">{{ form_label(registrationForm.plainPassword.first) }}</label>
+                    {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">{{ form_label(registrationForm.plainPassword.second) }}</label>
+                    {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group form-check">
+                    {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+                    <label class="form-check-label" for="exampleCheck1">{{ form_label(registrationForm.agreeTerms) }}</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+                <a href="{{ path('app_login') }}"><button type="button" class="btn btn-secondary">Log in</button></a>
+                {{ form_end(registrationForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

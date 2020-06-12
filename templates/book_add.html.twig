@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div>
+        <div class="content">
+            <div class="file-upload-group">
+                <div class="cover-preview-container">
+                    <div class="cover-preview"></div>
+                    <label id="errorLabel" class="err"></label>
+                </div>
+                <div class="form-container">
+                    <div>
+                        <h1>Add a new book</h1>
+                    </div>
+                    <div>
+                        {{ form_start(addBookForm) }}
+                        {% set formErrors = addBookForm.vars.errors.form.getErrors(true) %}
+                        {% if formErrors|length %}
+                            <div class="alert alert-danger">
+                                <label>Can not register due to these errors:</label>
+                                <ul>
+                                    {% for error in formErrors %}
+                                        <li>{{ error.message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <div class="form-group">
+                            <label>{{ form_label(addBookForm.bookName) }}</label>
+                            {{ form_widget(addBookForm.bookName, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            <label>{{ form_label(addBookForm.author) }}</label>
+                            {{ form_widget(addBookForm.author, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            <label>{{ form_label(addBookForm.readDate) }}</label>
+                            {{ form_widget(addBookForm.readDate, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            <label>{{ form_label(addBookForm.cover) }}</label>
+                            {{ form_widget(addBookForm.cover, {'attr': {'class': 'form-control-file cover'}}) }}
+                        </div>
+                        <div class="form-group">
+                            <label>{{ form_label(addBookForm.bookFile) }}</label>
+                            {{ form_widget(addBookForm.bookFile, {'attr': {'class': 'form-control-file'}}) }}
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">{{ form_label(addBookForm.description) }}</label>
+                            {{ form_widget(addBookForm.description, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        {{ form_row(addBookForm.submit, { 'attr': {'class': 'btn btn-primary'}}) }}
+                        {{ form_end(addBookForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('.cover-preview').css('background-image', 'url({{ asset("public/img/placeholder.png") }})')
+        })
+        $('.cover').on('change', function () {
+            if (this.files && this.files[0])
+            {
+                let reader = new FileReader();
+
+                reader.onload = function (e)
+                {
+                    let image = new Image();
+                    image.src = e.target.result;
+                    image.onload = function()
+                    {
+                        let width = this.width;
+                        let height = this.height;
+                        if (height / width < 1.5)
+                        {
+                            $('#errorLabel').text('Image should have landscape orientation');
+                        }
+                        else {
+                            $('#errorLabel').empty();
+                        }
+                    }
+                    $('.cover-preview').css('background-image', 'url("' + e.target.result + '")');
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+    </script>
+{% endblock %}
+

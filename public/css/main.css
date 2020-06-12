@@ -1,0 +1,100 @@
+body {
+    font-family: 'Red Hat Text', sans-serif;
+    width: 100%;
+    margin: 0;
+}
+.page {
+    min-height: 2000px;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    max-width: 70%;
+    margin-top: 100px;
+}
+.file-upload-group {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.cover-preview-container {
+    width: 30%;
+    background-color: #f8f9fa;
+    margin-top: 200px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
+.cover-preview {
+    width: 90%;
+    height: 350px;
+    background-repeat: no-repeat;
+    background-position: -40px 0px;
+    background-size: cover;
+}
+.form-container {
+    max-width: 50%;
+    width: 50%;
+    margin-top: 200px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 20px;
+}
+.err {
+    color: #B0413E;
+    font-size: 12px;
+}
+.pages-select-row {
+    display: flex;
+    flex-direction: row;
+}
+.preview-list-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin: auto;
+    flex-wrap: wrap;
+}
+.book-preview {
+    width: 30%;
+    height: 400px;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.book-item-title {
+    margin-top: 20px;
+}
+.book-preview + .book-preview {
+    margin-left: 15px;
+}
+.title-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.title-image {
+    width: 100px;
+    height: auto;
+    margin: 15px;
+}
+.book-cover-image {
+    height: 70%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.title-cover {
+    max-width: 60%;
+    max-height: 400px;
+    height: auto;
+    width: auto;
+}

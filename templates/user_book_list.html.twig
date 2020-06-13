@@ -37,9 +37,9 @@
         });
 
         let loaded = 0;
-        let countOnPage = 3;
+        let countOnPage = 10;
 
-        function loadData(page)
+        function loadData()
         {
             let userId = $('#data').attr('data-nickname');
             $.ajax({
@@ -65,15 +65,11 @@
                         let container = $('.preview-list-container');
                         for (item in items) {
                             let bookItem = $('<div></div>', {'class': 'book-preview'});
-                            $('<div></div>', {'class': 'book-cover-image'}).css('background-image', 'url("/public/userdata/covers/' + items[item].coverPath + '")').appendTo(bookItem);
+                            $('<img/>', {'class': 'book-cover-image'}).attr('src', '/public/userdata/covers/' + items[item].coverPath).appendTo(bookItem);
                             $('<h4></h4>', {'class': 'book-item-title'}).text(items[item].bookName).appendTo(bookItem);
                             $('<p></p>').text(items[item].author).appendTo(bookItem);
-                            let readMoreButton = $('<button></button>', {'class': 'btn btn-secondary btn-sm', 'type': 'button'});
+                            let readMoreButton = $('<button></button>', {'class': 'btn btn-secondary btn-sm fullViewButton', 'type': 'button', 'data-id': items[item].id});
                             readMoreButton.text('View').appendTo(bookItem);
-                            let s = '/b/' + items[item].id;
-                            readMoreButton.click(function () {
-                                window.location.href ='/book/' + items[item].id;
-                            });
                             container.append(bookItem);
                         }
                         if (count < countOnPage)
@@ -81,6 +77,9 @@
                             $('#loadMoreButton').hide();
                         }
                     }
+                    $('.fullViewButton').click(function () {
+                        window.location.href ='/book/' + $(this).attr('data-id');
+                    });
                 },
                 error: function (rawData) {
                     let data = JSON.parse(rawData);

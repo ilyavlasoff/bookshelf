@@ -62,7 +62,7 @@ body {
 }
 .book-preview {
     width: 30%;
-    height: 400px;
+    max-height: 400px;
     border-radius: 10px;
     padding: 20px;
     background-color: #f8f9fa;
@@ -87,14 +87,28 @@ body {
     margin: 15px;
 }
 .book-cover-image {
-    height: 70%;
+    /*height: 70%;
     width: 100%;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: cover;*/
+    max-height: 70%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
 }
 .title-cover {
     max-width: 60%;
     max-height: 400px;
     height: auto;
     width: auto;
+}
+.loaded-file-info {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+.loaded-file-info > button {
+    margin-left: 15px;
 }

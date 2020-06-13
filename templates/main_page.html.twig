@@ -1,5 +1,78 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div>
+        <div class="content">
+            <div class="title-header">
+                <img src="/public/img/book.png" alt="Book" class="title-image">
+                <h1>Books</h1>
+            </div>
+            <div class="preview-list-container"></div>
+            <button type="button" class="btn btn-primary" id="loadMoreButton">More...</button>
+        </div>
+    </div>
+{% endblock %}
 
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            loadData();
+            $('#loadMoreButton').click(function () {
+                loadData();
+            });
+        });
+
+        let loaded = 0;
+        let countOnPage = 10;
+
+        function loadData(page)
+        {
+            $.ajax({
+                method: 'POST',
+                url: "{{ path('load_book_items') }}",
+                data: {
+                    offset: loaded,
+                    count: countOnPage
+                },
+                success: function (rawData) {
+                    let data = JSON.parse(rawData);
+                    let total = data.total;
+                    let count = data.count;
+                    loaded += count;
+
+                    let items = data.items;
+                    if (count == 0)
+                    {
+                        $('#loadMoreButton').hide();
+                    }
+                    else {
+                        let container = $('.preview-list-container');
+                        for (item in items) {
+                            let bookItem = $('<div></div>', {'class': 'book-preview'});
+                            $('<img/>', {'class': 'book-cover-image'}).attr('src', '/public/userdata/covers/' + items[item].coverPath).appendTo(bookItem);
+                            $('<h4></h4>', {'class': 'book-item-title'}).text(items[item].bookName).appendTo(bookItem);
+                            $('<p></p>').text(items[item].author).appendTo(bookItem);
+                            let readMoreButton = $('<button></button>', {'class': 'btn btn-secondary btn-sm fullViewButton', 'type': 'button', 'data-id': items[item].id});
+                            readMoreButton.text('View').appendTo(bookItem);
+                            container.append(bookItem);
+                        }
+                        if (count < countOnPage)
+                        {
+                            $('#loadMoreButton').hide();
+                        }
+                    }
+                    $('.fullViewButton').click(function () {
+                        window.location.href ='/book/' + $(this).attr('data-id');
+                    });
+                },
+                error: function (rawData) {
+                    let data = JSON.parse(rawData);
+                    console.log(data.error);
+                    $('.errorLabel').text('Can not load data');
+                }
+            });
+        }
+
+
+    </script>
 {% endblock %}

@@ -10,7 +10,11 @@
                 </div>
                 <div class="form-container">
                     <div>
-                        <h1>Add a new book</h1>
+                        {% if editMode %}
+                            <h1>Edit book</h1>
+                        {% else %}
+                            <h1>Add a new book</h1>
+                        {% endif %}
                     </div>
                     <div>
                         {{ form_start(addBookForm) }}
@@ -35,16 +39,28 @@
                         </div>
                         <div class="form-group">
                             <label>{{ form_label(addBookForm.readDate) }}</label>
-                            {{ form_widget(addBookForm.readDate, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_widget(addBookForm.readDate) }}
                         </div>
-                        <div class="form-group">
-                            <label>{{ form_label(addBookForm.cover) }}</label>
-                            {{ form_widget(addBookForm.cover, {'attr': {'class': 'form-control-file cover'}}) }}
+                        <div class="custom-file mb-3">
+                            {{ form_widget(addBookForm.cover, {'attr': {'class': 'custom-file-input cover'}}) }}
+                            <label class="custom-file-label" for="customFile">{{ form_label(addBookForm.cover) }}</label>
                         </div>
-                        <div class="form-group">
-                            <label>{{ form_label(addBookForm.bookFile) }}</label>
-                            {{ form_widget(addBookForm.bookFile, {'attr': {'class': 'form-control-file'}}) }}
+                        {% if editMode and book.coverPath %}
+                            <div class="loaded-file-info">
+                                <p id="coverLabel">File {{ book.coverPath }} loaded</p>
+                                <button class="btn btn-secondary btn-sm" type="button" id="deleteCover">Delete</button>
+                            </div>
+                        {% endif %}
+                        <div class="custom-file mb-3">
+                            {{ form_widget(addBookForm.bookFile, {'attr': {'class': 'custom-file-input cover'}}) }}
+                            <label class="custom-file-label" for="customFile">{{ form_label(addBookForm.bookFile) }}</label>
                         </div>
+                        {% if editMode and book.filePath %}
+                            <div class="loaded-file-info">
+                                <p id="fileLabel">File {{ book.filePath }} loaded</p>
+                                <button class="btn btn-secondary btn-sm" type="button" id="deleteFile">Delete</button>
+                            </div>
+                        {% endif %}
                         <div class="form-group">
                             <label for="exampleInputEmail1">{{ form_label(addBookForm.description) }}</label>
                             {{ form_widget(addBookForm.description, {'attr': {'class': 'form-control'}}) }}
@@ -88,7 +104,43 @@
                 reader.readAsDataURL(this.files[0]);
             }
         });
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+        {% if editMode and book %}
+        $('#deleteFile').click(function () {
+            let label = $('#fileLabel');
+            $.ajax({
+                method: 'DELETE',
+                url: '{{ url('delete_book', {'id': book.id }) }}',
+                data: {},
+                success: function () {
+                    label.text('File was deleted');
+                    $('#deleteFile').hide();
+                },
+                error: function () {
+                    label.text('Error! File was not deleted');
+                }
+            })
+        });
 
+        $('#deleteCover').click(function () {
+            let label = $('#coverLabel');
+            $.ajax({
+                method: 'DELETE',
+                url: '{{ url('delete_cover', {'id': book.id }) }}',
+                data: {},
+                success: function () {
+                    label.text('Cover was deleted');
+                    $('#deleteCover').hide();
+                },
+                error: function (rawData) {
+                    label.text('Error! Cover was not deleted');
+                }
+            })
+        });
+        {% endif %}
     </script>
 {% endblock %}
 

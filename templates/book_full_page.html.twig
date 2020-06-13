@@ -10,7 +10,7 @@
             <img src="/public/userdata/covers/{{ book.coverPath }}" alt="" class="title-cover">
             {% if app.user and app.user.id == book.user.id %}
                 <div>
-                    <button class="btn btn-primary btn-sm" id="deleteButton">Edit</button>
+                    <button class="btn btn-primary btn-sm" id="editButton">Edit</button>
                     <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#deleteModal">Delete</button>
                 </div>
             {% endif %}
@@ -31,7 +31,7 @@
                     <p>Confirm deleting item?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Delete</button>
+                    <button type="button" class="btn btn-primary" id="deleteButton">Delete</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -44,7 +44,10 @@
             window.location.href='{{ path('download_book', {'id': book.id}) }}'
         });
         $('#deleteButton').click(function () {
-            window.location.href='{{ path('download_book', {'id': book.id}) }}'
-        })
+            window.location.href='{{ path('delete_book', {'id': book.id}) }}'
+        });
+        $('#editButton').click(function () {
+            window.location.href = '{{ path('edit_book', {'id': book.id}) }}';
+        });
     </script>
 {% endblock %}

@@ -29,11 +29,6 @@ class LoadBookItemsController extends AbstractController
         $offset = $request->request->get('offset', null);
         $count = $request->request->get('count', null);
 
-        /*if (! ($userId && $offset && $count))
-        {
-            return new JsonResponse(json_encode(['error' => 'Bad params']), Response::HTTP_BAD_REQUEST);
-        }*/
-
         if ($userId)
         {
             try {

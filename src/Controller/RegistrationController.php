@@ -48,7 +48,6 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
                     ->from(new Address('defaultuser1024@mail.ru', 'BookShelf Registration Mailer Bot'))
@@ -56,7 +55,6 @@ class RegistrationController extends AbstractController
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
 
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
@@ -87,9 +85,21 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        return $this->redirectToRoute('main_page');
+    }
 
-        return $this->redirectToRoute('app_register');
+    /**
+     * @Route("/success", name="app_success_registration")
+     */
+    public function displaySuccessPage(): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if (!$this->getUser()->isVerified()) {
+            return $this->render('register_success.html.twig');
+        }
+        else {
+            return $this->redirectToRoute('main_page');
+        }
     }
 }

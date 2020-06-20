@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="content">
+        <div class="form-container">
+            <h1>Congratulations!</h1>
+            <h3>You've successfully registered in Bookshelf service. Just one more thing remains<br>
+            Please, check your email {{ app.user.email }} and confirm your registration.<br>
+            Good luck!</h3>
+            <button class="btn btn-lg btn-primary" id="redirectToMainButton"
+                    onclick="window.location.href='{{ path('main_page') }}'">Start</button>
+        </div>
+    </div>
+{% endblock %}

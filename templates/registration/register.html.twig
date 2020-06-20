@@ -13,6 +13,17 @@
                 <h3>Register</h3>
 
                 {{ form_start(registrationForm) }}
+                {% set formErrors = registrationForm.vars.errors.form.getErrors(true) %}
+                {% if formErrors|length %}
+                    <div class="alert alert-danger">
+                        <label>Can not register due to these errors:</label>
+                        <ul>
+                            {% for error in formErrors %}
+                                <li>{{ error.message }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
                 <div class="form-group">
                     <label for="exampleInputEmail1">{{ form_label(registrationForm.email) }}</label>
                     {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}

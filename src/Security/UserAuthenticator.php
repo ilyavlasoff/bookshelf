@@ -82,9 +82,7 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
+
     public function getPassword($credentials): ?string
     {
         return $credentials['password'];
@@ -96,7 +94,15 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('main_page'));
+
+        if ($token->getUser()->isVerified())
+        {
+            return new RedirectResponse($this->urlGenerator->generate('main_page'));
+        }
+        else
+        {
+            return  new RedirectResponse($this->urlGenerator->generate('app_success_registration'));
+        }
     }
 
     protected function getLoginUrl()

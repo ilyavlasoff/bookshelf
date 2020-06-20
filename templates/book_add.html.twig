@@ -76,7 +76,11 @@
 {% block javascripts %}
     <script>
         $(document).ready(function () {
-            $('.cover-preview').css('background-image', 'url({{ asset("public/img/placeholder.png") }})')
+            {% if editMode and book.coverPath %}
+                $('.cover-preview').css('background-image', 'url({{ asset("/public/userdata/covers/" ~ book.coverPath) }})')
+            {% else %}
+                $('.cover-preview').css('background-image', 'url({{ asset("public/img/placeholder.png") }})')
+            {% endif %}
         })
         $('.cover').on('change', function () {
             if (this.files && this.files[0])
